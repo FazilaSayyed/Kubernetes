@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: todoapp
+   labels:
+      app: todoapp
+spec:
+   replicas: 14
+   strategy: 
+       type: RollingUpdate
+       rollingUpdate:
+          maxSurge: 2   
+          maxUnavailable: 2 
+   template:
+        metadata:
+            name: todoapp
+            labels: 
+               app: todoapp      
+        spec:
+          containers:
+              - name: todocontainer
+                image: fazilasayyed/todo:latest
+                ports:
+                  - name: http
+                    containerPort: 80
+                    protocol: TCP
+   selector:
+      matchLabels:
+        app: todoapp                
+
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+    name: mytodoservice
+spec:
+  type: LoadBalancer
+  selector:
+     app: todoapp
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: todoapp
+
+
