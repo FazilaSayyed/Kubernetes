@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oneingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: a0a1a5a02d0b441caa640fef432f7803-144592156.us-east-1.elb.amazonaws.com
+    http:
+      paths:
+       -  path: /
+          pathType: Prefix
+          backend:
+            service: 
+              name: todoapp
+              port:
+                number: 80
+       -  path: /student
+          pathType: Prefix
+          backend:
+            service: 
+              name: studentapp
+              port:
+                number: 8080
+                                        
